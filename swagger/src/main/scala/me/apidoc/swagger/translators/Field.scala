@@ -3,8 +3,8 @@ package me.apidoc.swagger.translators
 import lib.Primitives
 import me.apidoc.swagger.Util
 import com.bryzek.apidoc.spec.v0.{ models => apidoc }
-import com.wordnik.swagger.{ models => swagger }
-import com.wordnik.swagger.models.properties._
+import io.swagger.{ models => swagger }
+import io.swagger.models.properties._
 import scala.collection.JavaConversions._
 
 object Field {
@@ -76,15 +76,10 @@ object Field {
 
       case p: AbstractNumericProperty => {
         // Also covers DecimalProperty, DoubleProperty, FloatProperty, IntegerProperty, LongProperty
+        // todo: getExclusiveMinimum
         base.copy(
-          minimum = Option(p.getMinimum()).map(_.toLong) match {
-            case None => Option(p.getExclusiveMinimum()).map(_.toLong)
-            case Some(v) => Some(v)
-          },
-          maximum = Option(p.getMaximum()).map(_.toLong) match {
-            case None => Option(p.getExclusiveMaximum()).map(_.toLong)
-            case Some(v) => Some(v)
-          }
+          minimum = Option(p.getMinimum()).map(_.toLong),
+          maximum = Option(p.getMaximum()).map(_.toLong)
         )
       }
 
